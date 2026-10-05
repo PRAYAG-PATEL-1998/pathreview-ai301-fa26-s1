@@ -126,3 +126,19 @@ class VectorStore:
                 count=len(all_docs["ids"]),
                 collection=collection_name,
             )
+
+    def delete_collection(self, collection_name: str) -> None:
+        """Delete a whole collection (for example when a profile is deleted).
+
+        Does nothing if the collection does not exist.
+
+        Args:
+            collection_name: Name of the collection to delete
+        """
+        try:
+            self.client.delete_collection(name=collection_name)
+        except Exception:
+            # Chroma raises when the collection is missing; nothing to delete then.
+            logger.info("collection_not_found_for_delete", collection=collection_name)
+            return
+        logger.info("deleted_collection", collection=collection_name)

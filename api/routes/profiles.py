@@ -14,6 +14,7 @@ from core.services.profile_service import (
     get_profile,
     update_profile,
 )
+from rag.retriever.vector_store import VectorStore
 
 log = structlog.get_logger()
 
@@ -207,6 +208,7 @@ async def delete_profile_endpoint(
             db=db,
             profile_id=profile_id,
             user_id=current_user.id,
+            vector_store=VectorStore(),
         )
 
         if not success:
